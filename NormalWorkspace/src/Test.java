@@ -3,6 +3,17 @@ import java.util.Arrays;
 public class Test {
 	
 	public static void main(String[] args) {
+		
+		int k = 1;
+		switch (k) {
+		case 1: System.out.println("hello 1"); // no break
+		case 2: System.out.println("hello 2"); break;
+		case 3: System.out.println("3");
+		default:
+			break;
+		}
+		
+		
 		for (int x = 0, y = 0; x < 100 && y < 5; x+=10, y++) {
 			System.out.println("x: " + x + ", y: " + y);
 		}
