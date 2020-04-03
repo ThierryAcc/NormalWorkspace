@@ -74,52 +74,60 @@ public class VierGewinnt {
 		int countGegner = 0;
 
 		// vertikal
-//		for (int i = 0; i < y; i++) {
-//			countSpieler = 0;
-//			countGegner = 0;
-//			for (int j = 0; j < x; j++) {
-//				if(spielfeld[j][i] == spielerwert) {
-//					countSpieler++;
-//					if(countSpieler == 4) {
-//						System.out.println("Du hast gewonnen!");
-//						running = false;
-//						break;
-//					}
-//				}
-//				else if (spielfeld[j][i] == gegnerwert) {
-//					countGegner++;
-//					if (countGegner == 4) {
-//						System.out.println("Gegner hat gewonnen!");
-//						running = false;
-//						break;
-//					}
-//				}
-//			}
-//		}
+		for (int i = 0; i < y; i++) {
+			countSpieler = 0;
+			countGegner = 0;
+			for (int j = 0; j < x; j++) {
+				if(spielfeld[j][i] == spielerwert) {
+					countSpieler++;
+					if(countSpieler == 4) {
+						System.out.println("Du hast gewonnen!");
+						running = false;
+						break;
+					}
+				} else {
+					countSpieler = 0;
+				}
+				if (spielfeld[j][i] == gegnerwert) {
+					countGegner++;
+					if (countGegner == 4) {
+						System.out.println("Gegner hat gewonnen!");
+						running = false;
+						break;
+					}
+				} else {
+					countGegner = 0;
+				}
+			}
+		}
 
 		// horizontal
-//		for (int i = 0; i < x; i++) {
-//			countSpieler = 0;
-//			countGegner = 0;
-//			for (int j = 0; j < y; j++) {
-//				if(spielfeld[i][j] == spielerwert) {
-//					countSpieler++;
-//					if(countSpieler == 4) {
-//						System.out.println("Du hast gewonnen!");
-//						running = false;
-//						break;
-//					}
-//				}
-//				else if (spielfeld[i][j] == gegnerwert) {
-//					countGegner++;
-//					if (countGegner == 4) {
-//						System.out.println("Gegner hat gewonnen!");
-//						running = false;
-//						break;
-//					}
-//				}
-//			}
-//		}
+		for (int i = 0; i < x; i++) {
+			countSpieler = 0;
+			countGegner = 0;
+			for (int j = 0; j < y; j++) {
+				if(spielfeld[i][j] == spielerwert) {
+					countSpieler++;
+					if(countSpieler == 4) {
+						System.out.println("Du hast gewonnen!");
+						running = false;
+						break;
+					}
+				} else {
+					countSpieler = 0;
+				}
+				if (spielfeld[i][j] == gegnerwert) {
+					countGegner++;
+					if (countGegner == 4) {
+						System.out.println("Gegner hat gewonnen!");
+						running = false;
+						break;
+					}
+				} else {
+					countGegner = 0;
+				}
+			}
+		}
 
 		// diagonal links oben nach rechts unten	
 		for (int i = 0; i < 3; i++) {
