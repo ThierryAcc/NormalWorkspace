@@ -2,22 +2,20 @@ import java.util.Scanner;
 
 public class VierGewinnt {
 
-	static int x = 6;
-	static int y = 7;
-	static int xmax = 5;
-	static int ymax = 6;
-	static int[][] spielfeld = new int[x][y];
+	final static String spielerGewinnt = "Du hast gewonnen";
+	final static String gegnerGewinnt = "Gegner hat gewonnen";
+
+	static int countSpieler = 0;
+	static int countGegner = 0;
+	static int _x = 6;
+	static int _y = 7;
+	static int[][] spielfeld = new int[_x][_y];
 	static boolean spieler;
 	static boolean running = true;
 	static int gegnerwert = 3;
 	static int spielerwert = 1;
 
 	public static void main(String[] args) {
-//		spielfeld[0][0] = 100;
-//		spielfeld[xmax][0] = 200;
-//		spielfeld[0][ymax] = 300;
-//		spielfeld[xmax][ymax] = 400;
-
 		printSpielfeld();
 		spielen();
 	}
@@ -27,34 +25,21 @@ public class VierGewinnt {
 
 		while (running) {
 			System.out.println("In welches y möchtest du deine Münze legen (0-6) ?");
-			int y = s.nextInt();
+
+			int y = Integer.valueOf(s.nextLine());
+
+			while (!(y == 0 || y == 1 || y == 2 || y == 3 || y == 4 || y == 5 || y == 6)) {
+				System.out.println("Please type a number between 0 and 6");
+				y = Integer.valueOf(s.nextLine());
+			}
 
 			while (spielfeld[0][y] != 0) {
 				System.out.println("Das Feld ist voll, bitte ein anderes y wählen");
-				y = s.nextInt();
-			}
-
-			while (y > 6) {
-				System.out.println("Please type a number between 0 and 6");
-				y = s.nextInt();
+				y = Integer.valueOf(s.nextLine());
 			}
 
 			// MÜNZE LEGEN
-			for (int i = xmax; i >= 0; i--) {
-				if (spielfeld[i][y] == 0) {
-					if (spieler) {
-						spielfeld[i][y] = gegnerwert;
-					} else {
-						spielfeld[i][y] = spielerwert;
-					}
-
-					siegesCheck(i, y);
-
-					System.out.println("MÜNZE GESETZT BEI spielfeld[" + i + "]" + "[" + y + "]");
-					break;
-				}
-
-			}
+			zug(y);
 
 			spieler = !spieler;
 
@@ -64,12 +49,29 @@ public class VierGewinnt {
 		s.close();
 	}
 
-	public static void siegesCheck(int x, int y) {
-		System.out.println("Siegescheck\n-------------------");
-		int countSpieler = 0;
-		int countGegner = 0;
+	public static void zug(int y) {
+		for (int i = _x - 1; i >= 0; i--) {
+			if (spielfeld[i][y] == 0) {
+				if (spieler) {
+					spielfeld[i][y] = gegnerwert;
+				} else {
+					spielfeld[i][y] = spielerwert;
+				}
 
-		// links oben nach rechts unten
+				siegesCheck(i, y);
+
+				System.out.println("MÜNZE GESETZT BEI spielfeld[" + i + "]" + "[" + y + "]");
+				break;
+			}
+
+		}
+	}
+
+	// links oben nach rechts unten
+	public static void diagonalLORU(int x, int y) {
+		countSpieler = 0;
+		countGegner = 0;
+
 		for (int i = 0; (x + i < 6) && (y + i < 7); i++) {
 			int x2 = (x + i);
 			int y2 = (y + i);
@@ -94,15 +96,15 @@ public class VierGewinnt {
 			}
 		}
 
-		gewonnen(countSpieler, "Du hast gewonnen");
-		gewonnen(countGegner, "Gegner hat gewonnen");
-		System.out.println(countSpieler);
-		System.out.println(countGegner);
+		gewonnen(countSpieler, spielerGewinnt);
+		gewonnen(countGegner, gegnerGewinnt);
+	}
 
+	// links unten nach rechts oben
+	public static void diagonalLURO(int x, int y) {
 		countSpieler = 0;
 		countGegner = 0;
 
-		// links unten nach rechts oben
 		for (int i = 0; (x - i > 0) && (y + i < 7); i++) {
 			int x2 = (x - i);
 			int y2 = (y + i);
@@ -126,62 +128,64 @@ public class VierGewinnt {
 				break;
 			}
 		}
-		gewonnen(countSpieler, "Du hast gewonnen");
+
+		gewonnen(countSpieler, spielerGewinnt);
 		gewonnen(countGegner, "Gegner hat gewonnen");
-		System.out.println(countSpieler);
-		System.out.println(countGegner);
+	}
 
-		// vertikal
-//		for (int i = 0; i < y; i++) {
-//			countSpieler = 0;
-//			countGegner = 0;
-//			for (int j = 0; j < x; j++) {
-//				if (spielfeld[j][i] == spielerwert) {
-//					countSpieler++;
-//					gewonnen(countSpieler, "Du hast gewonnen");
-//				} else {
-//					countSpieler = 0;
-//				}
-//				if (spielfeld[j][i] == gegnerwert) {
-//					countGegner++;
-//					gewonnen(countSpieler, "Gegner hat gewonnen");
-//
-//				} else {
-//					countGegner = 0;
-//				}
-//			}
-//		}
+	// vertikal
+	public static void vertikal() {
+		for (int i = 0; i < _y; i++) {
+			countSpieler = 0;
+			countGegner = 0;
+			for (int j = 0; j < _x; j++) {
+				if (spielfeld[j][i] == spielerwert) {
+					countSpieler++;
+					gewonnen(countSpieler, spielerGewinnt);
+				} else {
+					countSpieler = 0;
+				}
+				if (spielfeld[j][i] == gegnerwert) {
+					countGegner++;
+					gewonnen(countGegner, gegnerGewinnt);
 
-		// horizontal
-//		for (int i = 0; i < x; i++) {
-//			countSpieler = 0;
-//			countGegner = 0;
-//			for (int j = 0; j < y; j++) {
-//				if (spielfeld[i][j] == spielerwert) {
-//					countSpieler++;
-//					if (countSpieler == 4) {
-//						System.out.println("Du hast gewonnen!");
-//						running = false;
-//						break;
-//					}
-//				} else {
-//					countSpieler = 0;
-//				}
-//				if (spielfeld[i][j] == gegnerwert) {
-//					countGegner++;
-//					if (countGegner == 4) {
-//						System.out.println("Gegner hat gewonnen!");
-//						running = false;
-//						break;
-//					}
-//				} else {
-//					countGegner = 0;
-//				}
-//			}
-//		}
+				} else {
+					countGegner = 0;
+				}
+			}
+		}
+	}
 
-		// diagonal links oben nach rechts unten
+	// horizontal
+	public static void horizontal() {
+		for (int i = 0; i < _x; i++) {
+			countSpieler = 0;
+			countGegner = 0;
+			for (int j = 0; j < _y; j++) {
+				if (spielfeld[i][j] == spielerwert) {
+					countSpieler++;
+					gewonnen(countSpieler, spielerGewinnt);
+				} else {
+					countSpieler = 0;
+				}
+				if (spielfeld[i][j] == gegnerwert) {
+					countGegner++;
+					gewonnen(countGegner, gegnerGewinnt);
 
+				} else {
+					countGegner = 0;
+				}
+			}
+		}
+	}
+
+	public static void siegesCheck(int x, int y) {
+		System.out.println("Siegescheck\n-------------------");
+
+		diagonalLORU(x, y);
+		diagonalLURO(x, y);
+		vertikal();
+		horizontal();
 	}
 
 	public static void gewonnen(int countSpieler, String message) {
@@ -192,9 +196,9 @@ public class VierGewinnt {
 	}
 
 	public static void printSpielfeld() {
-		for (int i = 0; i < x; i++) {
+		for (int i = 0; i < _x; i++) {
 			System.out.println();
-			for (int j = 0; j < y; j++) {
+			for (int j = 0; j < _y; j++) {
 				System.out.print(spielfeld[i][j] + " ");
 			}
 		}
