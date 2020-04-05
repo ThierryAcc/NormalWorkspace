@@ -26,16 +26,29 @@ public class VierGewinnt {
 		while (running) {
 			System.out.println("In welches y möchtest du deine Münze legen (0-6) ?");
 
-			int y = Integer.valueOf(s.nextLine());
+			int y = 1000;
+			try {
+				y = Integer.valueOf(s.nextLine());
+			} catch (Exception e) {
+
+			}
 
 			while (!(y == 0 || y == 1 || y == 2 || y == 3 || y == 4 || y == 5 || y == 6)) {
 				System.out.println("Please type a number between 0 and 6");
-				y = Integer.valueOf(s.nextLine());
+				try {
+					y = Integer.valueOf(s.nextLine());
+				} catch (Exception e) {
+
+				}
 			}
 
 			while (spielfeld[0][y] != 0) {
 				System.out.println("Das Feld ist voll, bitte ein anderes y wählen");
-				y = Integer.valueOf(s.nextLine());
+				try {
+					y = Integer.valueOf(s.nextLine());
+				} catch (Exception e) {
+
+				}
 			}
 
 			// MÜNZE LEGEN
@@ -79,7 +92,13 @@ public class VierGewinnt {
 				System.out.println("[" + x2 + "]" + "[" + y2 + "]");
 				countSpieler++;
 				System.out.println("Addition: " + countSpieler);
-			} else {
+			} else if (spielfeld[x2][y2] == gegnerwert) {
+				System.out.println("[" + x2 + "]" + "[" + y2 + "]");
+				countGegner++;
+				System.out.println("Addition: " + countGegner);
+			}
+
+			else {
 				break;
 			}
 		}
@@ -88,9 +107,9 @@ public class VierGewinnt {
 			int x2 = (x - i);
 			int y2 = (y - i);
 			if (spielfeld[x2][y2] == spielerwert) {
-				System.out.println("[" + x2 + "]" + "[" + y2 + "]");
 				countSpieler++;
-				System.out.println("Subtraktion: " + countSpieler);
+			} else if (spielfeld[x2][y2] == gegnerwert) {
+				countGegner++;
 			} else {
 				break;
 			}
@@ -110,8 +129,8 @@ public class VierGewinnt {
 			int y2 = (y + i);
 			if (spielfeld[x2][y2] == spielerwert) {
 				countSpieler++;
-				System.out.println("[" + x2 + "]" + "[" + y2 + "]");
-				System.out.println("Mix1: " + countSpieler);
+			} else if (spielfeld[x2][y2] == gegnerwert) {
+				countGegner++;
 			} else {
 				break;
 			}
@@ -122,8 +141,8 @@ public class VierGewinnt {
 			int y2 = (y - i);
 			if (spielfeld[x2][y2] == spielerwert) {
 				countSpieler++;
-				System.out.println("[" + x2 + "]" + "[" + y2 + "]");
-				System.out.println("Mix2: " + countSpieler);
+			} else if (spielfeld[x2][y2] == gegnerwert) {
+				countGegner++;
 			} else {
 				break;
 			}
